@@ -1,10 +1,17 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text} from 'react-native';
 
 export default function BookmarkScreen() {
   return (
-    <View>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <Text>BookmarkScreen</Text>
-    </View>
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 6,
+    flex: 1,
+  },
+});
