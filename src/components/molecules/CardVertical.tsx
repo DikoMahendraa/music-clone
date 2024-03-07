@@ -11,7 +11,7 @@ type Props = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Card = ({img, category, description, label}: Props) => {
+const CardVertical = ({img, category, description, label}: Props) => {
   return (
     <TouchableOpacity style={styles.container}>
       <View style={styles.containImg} />
@@ -38,7 +38,7 @@ const Card = ({img, category, description, label}: Props) => {
   );
 };
 
-export default memo(Card);
+export default memo(CardVertical);
 
 const styles = StyleSheet.create({
   container: {

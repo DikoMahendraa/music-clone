@@ -4,7 +4,7 @@ import Spacer from '../../components/atoms/Spacer';
 
 import SimplyCard from '../../components/molecules/SimplyCard';
 import Hero from '../../components/molecules/Hero';
-import Card from '../../components/molecules/Card';
+import CardVertical from '../../components/molecules/CardVertical';
 import Label from '../../components/atoms/Label';
 
 export default function HomeScreen() {
@@ -31,7 +31,7 @@ export default function HomeScreen() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {[1, 2, 3, 4].map(key => (
             <>
-              <Card
+              <CardVertical
                 description="Show - dedezu"
                 category="Business"
                 label="Podcast Barokah"
@@ -51,7 +51,7 @@ export default function HomeScreen() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {[1, 2, 3, 4].map(key => (
             <>
-              <Card
+              <CardVertical
                 description="Show - Endgame Podcast"
                 category="Business"
                 label="Podcast Barokah"
