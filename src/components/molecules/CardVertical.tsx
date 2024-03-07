@@ -1,20 +1,31 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React, {memo} from 'react';
 import Spacer from '../atoms/Spacer';
-import Colors from '../../themes/Colors';
 
 type Props = {
   img: string;
   category?: string;
   label?: string;
   description?: string;
+  onPress?: () => void;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const CardVertical = ({img, category, description, label}: Props) => {
+const CardVertical: React.FC<Props> = ({
+  img,
+  category,
+  description,
+  label,
+  onPress,
+}) => {
+  console.log(img);
   return (
-    <TouchableOpacity style={styles.container}>
-      <View style={styles.containImg} />
+    <TouchableOpacity onPress={onPress} style={styles.container}>
+      <Image
+        source={{
+          uri: img ?? '',
+        }}
+        style={styles.containImg}
+      />
 
       {category && (
         <>
@@ -47,9 +58,8 @@ const styles = StyleSheet.create({
   containImg: {
     height: 150,
     borderRadius: 6,
-    backgroundColor: Colors.primary,
   },
-  containCategory: {fontSize: 10, color: 'green'},
+  containCategory: {fontSize: 10, color: 'green', textTransform: 'capitalize'},
   containLabel: {fontSize: 10, color: 'black', fontWeight: '500'},
   containDescription: {fontSize: 10, color: 'gray'},
 });

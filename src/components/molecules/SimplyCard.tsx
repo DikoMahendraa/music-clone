@@ -8,8 +8,7 @@ type Props = {
   img: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const SimplyCard = ({label, img}: Props) => {
+const SimplyCard: React.FC<Props> = ({label, img}) => {
   return (
     <View style={styles.card}>
       <View style={styles.cardImg} />

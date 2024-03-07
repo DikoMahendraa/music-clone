@@ -12,6 +12,7 @@ export type MainTabParams = {
 };
 
 export type MainStackParams = {
+  PlaySongScreen: undefined;
   Main: undefined;
 };
 

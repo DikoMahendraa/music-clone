@@ -10,8 +10,12 @@ type Props = {
   description?: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const CardHorizontal = ({img, category, description, label}: Props) => {
+const CardHorizontal: React.FC<Props> = ({
+  img,
+  category,
+  description,
+  label,
+}) => {
   return (
     <TouchableOpacity style={styles.container}>
       <View style={styles.containImg} />

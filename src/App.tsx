@@ -5,6 +5,9 @@ import DropdownAlertHolder from './services/DropdownAlertHolder';
 import RootNavigation from './navigation/RootNavigation';
 import LoadingModal from './components/atoms/LoadingModal';
 import DownloadUpdateModal from './components/atoms/DownloadUpdateModal';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const App = props => {
   useEffect(() => {
@@ -17,10 +20,12 @@ const App = props => {
 
   return (
     <React.Fragment>
-      <RootNavigation />
-      <LoadingModal />
-      <DropdownAlert alert={setDropdownHolder} />
-      <DownloadUpdateModal />
+      <QueryClientProvider client={queryClient}>
+        <RootNavigation />
+        <LoadingModal />
+        <DropdownAlert alert={setDropdownHolder} />
+        <DownloadUpdateModal />
+      </QueryClientProvider>
     </React.Fragment>
   );
 };

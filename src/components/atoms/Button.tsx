@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Button = (props: ButtonProps) => {
+const Button: React.FC<ButtonProps> = props => {
   const {title, onPress, disabled} = props;
   const isDisable = disabled || false;
   return (

@@ -10,8 +10,7 @@ type Props = {
   backgroundImg: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Hero = ({label, description, backgroundImg}: Props) => {
+const Hero: React.FC<Props> = ({label, description, backgroundImg}) => {
   return (
     <View style={styles.hero}>
       <View style={styles.heroBackground} />

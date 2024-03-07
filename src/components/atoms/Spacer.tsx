@@ -6,7 +6,7 @@ type SpacerProps = {
   width?: number;
 };
 
-const Spacer = (props: SpacerProps) => {
+const Spacer: React.FC<SpacerProps> = props => {
   const {height, width} = props;
   return <View style={{width, height}} />;
 };

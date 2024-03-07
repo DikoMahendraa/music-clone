@@ -2,11 +2,11 @@ import {StyleSheet, Text} from 'react-native';
 import React, {memo} from 'react';
 import Colors from '../../themes/Colors';
 
-type Props = {
+type LabelProps = {
   label: string;
 };
 
-const Label = ({label}: Props) => {
+const Label: React.FC<LabelProps> = ({label}) => {
   return <Text style={styles.label}>{label}</Text>;
 };
 

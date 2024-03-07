@@ -6,8 +6,32 @@ import SimplyCard from '../../components/molecules/SimplyCard';
 import Hero from '../../components/molecules/Hero';
 import CardVertical from '../../components/molecules/CardVertical';
 import Label from '../../components/atoms/Label';
+import {useQuery} from '@tanstack/react-query';
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
+  var options = {
+    method: 'GET',
+    headers: {
+      Authorization: process.env.token,
+    },
+  };
+
+  const {data} = useQuery({
+    queryKey: ['getData'],
+    queryFn: async () => {
+      return await fetch(
+        'https://api.music.apple.com/v1/catalog/id/charts?chart=most-played&genre=20&limit=10&offset=10&types=songs',
+        options,
+      )
+        .then(function (res) {
+          return res.json();
+        })
+        .then(function (resJson) {
+          return resJson;
+        });
+    },
+  });
+
   return (
     <ScrollView style={style.container} showsVerticalScrollIndicator={false}>
       <View>
@@ -29,14 +53,15 @@ export default function HomeScreen() {
         <Label label=" Your Shows" />
         <Spacer height={12} />
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {[1, 2, 3, 4].map(key => (
+          {[1, 2, 3, 4, 5].map(({attributes, type}) => (
             <>
               <CardVertical
-                description="Show - dedezu"
-                category="Business"
-                label="Podcast Barokah"
-                img=""
-                key={key}
+                onPress={() => navigation.navigate('PlaySongScreen')}
+                description={`Show - ${attributes?.artistName ?? ''}`}
+                category={type ?? 'category'}
+                label={attributes?.name ?? 'label'}
+                img={attributes?.artwork?.url ?? 'img'}
+                key={attributes?.name ?? ''}
               />
               <Spacer width={6} />
             </>
@@ -49,7 +74,7 @@ export default function HomeScreen() {
         <Label label="Episodes for you" />
         <Spacer height={12} />
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {[1, 2, 3, 4].map(key => (
+          {[1, 2, 3, 4, 5].map(key => (
             <>
               <CardVertical
                 description="Show - Endgame Podcast"
