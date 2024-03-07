@@ -16,6 +16,7 @@
 		44BC83DE299644F200A0D306 /* ConstantHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BC83DD299644F200A0D306 /* ConstantHelper.m */; };
 		7699B88040F8A987B510C191 /* libPods-VsBoilerPlateV2-VsBoilerPlateV2Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-VsBoilerPlateV2-VsBoilerPlateV2Tests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		DDD3A2DB2B9A24A900CB331E /* dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD3A2DA2B9A24A900CB331E /* dummy.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		664F0D2A53AE29E5463B3A86 /* Pods-VsBoilerPlateV2.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VsBoilerPlateV2.staging.xcconfig"; path = "Target Support Files/Pods-VsBoilerPlateV2/Pods-VsBoilerPlateV2.staging.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = VsBoilerPlateV2/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-VsBoilerPlateV2-VsBoilerPlateV2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VsBoilerPlateV2-VsBoilerPlateV2Tests.release.xcconfig"; path = "Target Support Files/Pods-VsBoilerPlateV2-VsBoilerPlateV2Tests/Pods-VsBoilerPlateV2-VsBoilerPlateV2Tests.release.xcconfig"; sourceTree = "<group>"; };
+		DDD3A2D92B9A24A800CB331E /* VsBoilerPlateV2-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VsBoilerPlateV2-Bridging-Header.h"; sourceTree = "<group>"; };
+		DDD3A2DA2B9A24A900CB331E /* dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummy.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -151,6 +154,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				DDD3A2DA2B9A24A900CB331E /* dummy.swift */,
 				44BC83D82996438E00A0D306 /* Modules */,
 				13B07FAE1A68108700A75B9A /* VsBoilerPlateV2 */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -158,6 +162,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				DDD3A2D92B9A24A800CB331E /* VsBoilerPlateV2-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -245,7 +250,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1430;
 					};
 				};
 			};
@@ -451,6 +456,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				44BC83DC299644CE00A0D306 /* SplashScreen.m in Sources */,
+				DDD3A2DB2B9A24A900CB331E /* dummy.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				44BC83DE299644F200A0D306 /* ConstantHelper.m in Sources */,
@@ -472,6 +478,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-VsBoilerPlateV2-VsBoilerPlateV2Tests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -499,6 +506,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-VsBoilerPlateV2-VsBoilerPlateV2Tests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = VsBoilerPlateV2Tests/Info.plist;
@@ -550,6 +558,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vsboilerplatev2.staging;
 				PRODUCT_NAME = "Debug - VsBoilerPlateV2";
+				SWIFT_OBJC_BRIDGING_HEADER = "VsBoilerPlateV2-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -586,6 +595,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vsboilerplatev2;
 				PRODUCT_NAME = VsBoilerPlateV2;
+				SWIFT_OBJC_BRIDGING_HEADER = "VsBoilerPlateV2-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -690,6 +700,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vsboilerplatev2.staging;
 				PRODUCT_NAME = "Staging - VsBoilerPlateV2";
+				SWIFT_OBJC_BRIDGING_HEADER = "VsBoilerPlateV2-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -699,6 +710,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 39F0DC23CF891CBBA0206D9D /* Pods-VsBoilerPlateV2-VsBoilerPlateV2Tests.staging.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = VsBoilerPlateV2Tests/Info.plist;
