@@ -41,7 +41,7 @@
     "react-native-screens": "^3.29.0",
     "react-native-svg": "^14.1.0",
     "react-native-tab-view": "^3.5.2",
-    "react-native-track-player": "^4.0.1",
+    "react-native-track-player": "^4.0.1-nightly-ef9fb0061ce5fc6c2892bbc480482a832ac6af92",
     "zustand": "^4.5.0"
   },
   "devDependencies": {
