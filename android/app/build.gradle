@@ -97,8 +97,8 @@ android {
             signingConfig signingConfigs.debug
             applicationIdSuffix ".staging"
             resValue "string", "app_name", "Debug - VSBoilerPlateV2"
-            resValue "string", "CodePushDeploymentKey", '""'
-            buildConfigField "String", "BASE_URL", '"https://reqres.in/"'
+            resValue "string", "CodePushDeploymentKey", 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjlLNlc3QzM4UlUifQ.eyJpYXQiOjE3MDc5OTg4NTMsImV4cCI6MTcyMzU1MDg1MywiaXNzIjoiRENUU1k0MlQyTiJ9.kcLtnMuGlSqH1qWfEWRDJd79zpFC0onC9LFPOWqVBuNiwAtmJHqlTPbWB4MEmWeJmtRcxfE2KP0qy6LBeRFMYw'
+            buildConfigField "String", "BASE_URL", 'https://api.music.apple.com//v1/catalog/us/albums/1616728060'
             buildConfigField "String", "ENVIRONTMENT", '"DEBUG"'
         }
         staging {
@@ -108,7 +108,7 @@ android {
             applicationIdSuffix ".staging"
             resValue "string", "app_name", "Staging - VSBoilerPlateV2"
             resValue "string", "CodePushDeploymentKey", '"f6H5CF0D1CNkzoE5Vytd5pCr1NWIAZ9JgmSND"'
-            buildConfigField "String", "BASE_URL", '"https://reqres.in/"'
+            buildConfigField "String", "BASE_URL", '"https://api.music.apple.com"'
             buildConfigField "String", "ENVIRONTMENT", '"STAGING"'
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
@@ -120,7 +120,7 @@ android {
             signingConfig signingConfigs.debug
             resValue "string", "app_name", "VSBoilerPlateV2"
             resValue "string", "CodePushDeploymentKey", '"Wi05PfBPyX7R4k-7avYlvETWvGsLik-AJVU8N"'
-            buildConfigField "String", "BASE_URL", '"https://reqres.in/"'
+            buildConfigField "String", "BASE_URL", '"https://api.music.apple.com"'
             buildConfigField "String", "ENVIRONTMENT", '"PRODUCTION"'
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"

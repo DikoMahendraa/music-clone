@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {memo} from 'react';
 import Spacer from '../atoms/Spacer';
 import Colors from '../../themes/Colors';
@@ -16,9 +16,11 @@ const CardHorizontal: React.FC<Props> = ({
   description,
   label,
 }) => {
+  const cleanImg = img?.replace('{w}x{h}', '200x200');
+
   return (
     <TouchableOpacity style={styles.container}>
-      <View style={styles.containImg} />
+      <Image style={styles.containImg} source={{uri: cleanImg}} />
 
       <View>
         {category && (

@@ -7,10 +7,9 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import Label from '../../components/atoms/Label';
-import Spacer from '../../components/atoms/Spacer';
 import {Search} from 'lucide-react-native';
-import Hero from '../../components/molecules/Hero';
+import {Spacer, Label} from '../../components/atoms';
+import {Hero} from '../../components/molecules';
 import Colors from '../../themes/Colors';
 
 export default function ListMusicScreen() {

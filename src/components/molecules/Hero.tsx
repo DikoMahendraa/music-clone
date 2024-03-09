@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import Colors from '../../themes/Colors';
 import {scale} from '../../services/Scale';
@@ -13,7 +13,7 @@ type Props = {
 const Hero: React.FC<Props> = ({label, description, backgroundImg}) => {
   return (
     <View style={styles.hero}>
-      <View style={styles.heroBackground} />
+      <Image style={styles.heroBackground} source={{uri: backgroundImg}} />
 
       <View style={styles.heroWrapperContain}>
         <View style={styles.wrapperDescription}>

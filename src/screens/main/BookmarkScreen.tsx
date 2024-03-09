@@ -1,9 +1,8 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import Label from '../../components/atoms/Label';
-import Spacer from '../../components/atoms/Spacer';
+import {Label, Spacer} from '../../components/atoms';
+import {CardHorizontal} from '../../components/molecules';
 import Colors from '../../themes/Colors';
-import CardHorizontal from '../../components/molecules/CardHorizontal';
 
 export default function BookmarkScreen() {
   return (

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React, {memo} from 'react';
 import {scale} from '../../services/Scale';
 import Colors from '../../themes/Colors';
@@ -11,7 +11,7 @@ type Props = {
 const SimplyCard: React.FC<Props> = ({label, img}) => {
   return (
     <View style={styles.card}>
-      <View style={styles.cardImg} />
+      <Image style={styles.cardImg} source={{uri: img}} />
       <Text style={styles.cardLabel}>{label}</Text>
     </View>
   );

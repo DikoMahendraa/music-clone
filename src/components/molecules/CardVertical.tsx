@@ -17,12 +17,13 @@ const CardVertical: React.FC<Props> = ({
   label,
   onPress,
 }) => {
-  console.log(img);
+  const cleanImg = img?.replace('{w}x{h}', '400x400');
+
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       <Image
         source={{
-          uri: img ?? '',
+          uri: cleanImg,
         }}
         style={styles.containImg}
       />
@@ -56,6 +57,7 @@ const styles = StyleSheet.create({
     width: 150,
   },
   containImg: {
+    width: 150,
     height: 150,
     borderRadius: 6,
   },

@@ -19,14 +19,12 @@ const App = props => {
   }, []);
 
   return (
-    <React.Fragment>
-      <QueryClientProvider client={queryClient}>
-        <RootNavigation />
-        <LoadingModal />
-        <DropdownAlert alert={setDropdownHolder} />
-        <DownloadUpdateModal />
-      </QueryClientProvider>
-    </React.Fragment>
+    <QueryClientProvider client={queryClient}>
+      <RootNavigation />
+      <LoadingModal />
+      <DropdownAlert alert={setDropdownHolder} />
+      <DownloadUpdateModal />
+    </QueryClientProvider>
   );
 };
 
