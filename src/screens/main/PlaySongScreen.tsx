@@ -1,8 +1,6 @@
 import TrackPlayer, {
   Capability,
-  State,
   usePlaybackState,
-  useProgress,
 } from 'react-native-track-player';
 import {StyleSheet, TouchableOpacity, Text, View, Image} from 'react-native';
 import React, {useEffect} from 'react';
@@ -40,34 +38,31 @@ TrackPlayer.updateOptions({
   compactCapabilities: [Capability.Play, Capability.Pause],
 });
 
-const setupTrackPlayer = async () => {
-  try {
-    await TrackPlayer.setupPlayer();
-    await TrackPlayer.add(tracks);
-  } catch (error) {
-    console.log();
-  }
-};
+// const setupTogglePlayer = async statusPlay => {
+//   const currentTrack = await TrackPlayer.getActiveTrackIndex();
 
-const setupTogglePlayer = async statusPlay => {
-  const currentTrack = await TrackPlayer.getActiveTrackIndex();
+//   if (currentTrack !== null) {
+//     if (statusPlay === State.Paused) {
+//       await TrackPlayer.play();
+//     } else {
+//       await TrackPlayer.pause();
+//     }
+//   }
+// };
 
-  if (currentTrack !== null) {
-    if (statusPlay === State.Paused) {
-      await TrackPlayer.play();
-    } else {
-      await TrackPlayer.pause();
-    }
-  }
-};
-
-const PlaySongScreen = ({navigation}) => {
+const PlaySongScreen = ({navigation}: any) => {
   const {state: playBackState} = usePlaybackState();
-  const progress = useProgress();
-
-  console.log('progress', progress);
 
   useEffect(() => {
+    const setupTrackPlayer = async () => {
+      try {
+        await TrackPlayer.setupPlayer();
+        await TrackPlayer.add(tracks);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     setupTrackPlayer();
 
     return () => TrackPlayer.stop();
@@ -129,7 +124,7 @@ export default PlaySongScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 38,
+    marginTop: scale(38),
     paddingHorizontal: 6,
     position: 'relative',
   },
@@ -138,16 +133,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 4,
   },
-  // button: {
-  //   flex: 1,
-  //   paddingVertical: 8,
-  //   paddingHorizontal: 12,
-  //   backgroundColor: Colors.primary,
-  //   borderRadius: 4,
-  //   flexDirection: 'row',
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
   text: {
     color: Colors.white,
   },
@@ -166,7 +151,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 80 / 2,
+    borderRadius: scale(80 / 2),
   },
   wrapperButton: {
     paddingHorizontal: 55,
@@ -180,7 +165,7 @@ const styles = StyleSheet.create({
     bottom: 80,
   },
   heroMusic: {
-    height: 400,
+    height: scale(400),
     borderRadius: 6,
     backgroundColor: Colors.primary,
   },

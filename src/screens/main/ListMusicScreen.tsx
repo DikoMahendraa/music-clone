@@ -1,18 +1,68 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {
-  TouchableOpacity,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
+  ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
+import {useInfiniteQuery} from '@tanstack/react-query';
+import {FlashList} from '@shopify/flash-list';
+import {ApiResponse} from 'apisauce';
 import {Search} from 'lucide-react-native';
 import {Spacer, Label} from '../../components/atoms';
-import {Hero} from '../../components/molecules';
+import {SimplyCard} from '../../components/molecules';
 import Colors from '../../themes/Colors';
+import {ListMusicResponse, getListMusic} from '../../services/api/appleMusic';
+
+export const getOffsetPageParams = ({
+  url,
+  isSearch,
+}: {
+  url: string;
+  isSearch?: boolean;
+}): string | undefined => {
+  if (url.split('?')[1]) {
+    return url.split('?')[1].split('&')[isSearch ? 0 : 2].split('=')[1];
+  }
+  return undefined;
+};
+
+const EmptyList = () => (
+  <View>
+    <Text>Empty list</Text>
+  </View>
+);
 
 export default function ListMusicScreen() {
+  const {refetch, isRefetching, data, hasNextPage, fetchNextPage, isLoading} =
+    useInfiniteQuery<ApiResponse<ListMusicResponse, ListMusicResponse>>({
+      queryKey: ['list-music'],
+      initialPageParam: 5,
+      getNextPageParam: ({data: dataNext}) =>
+        getOffsetPageParams({url: String(dataNext?.results.songs[0].next)}),
+
+      queryFn: async ({pageParam}) => {
+        return getListMusic({
+          offset: Number(pageParam),
+          limit: 10,
+        });
+      },
+    });
+
+  const onLoadMore = (): void => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  const keyExtractor = useCallback(
+    (item: any | undefined, index: number) => `${index}-${item?.id}`,
+    [],
+  );
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View>
@@ -28,37 +78,35 @@ export default function ListMusicScreen() {
         </View>
         <Spacer height={24} />
         <View>
-          <Hero
-            backgroundImg=""
-            description="Dengarkan lagu terbaru Sarah Suhairi dan Alfie Zumi sekarang."
-            label="Sarah Suhairi, Aflie Zumi - SAH"
+          <FlashList
+            data={data?.pages
+              .map(item => item.data?.results.songs[0].data)
+              .flat()}
+            renderItem={({item}): JSX.Element => (
+              <>
+                <SimplyCard
+                  img={item?.attributes.artwork.url}
+                  label={item?.attributes.name}
+                  name={item?.attributes.artistName}
+                />
+                <Spacer height={12} />
+              </>
+            )}
+            estimatedItemSize={200}
+            keyExtractor={keyExtractor}
+            onRefresh={refetch}
+            refreshing={isRefetching}
+            ListEmptyComponent={isLoading ? ActivityIndicator : EmptyList}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefetching}
+                tintColor="blue"
+                onRefresh={refetch}
+              />
+            }
+            onEndReached={onLoadMore}
+            ListFooterComponent={hasNextPage ? ActivityIndicator : undefined}
           />
-
-          <Spacer height={24} />
-
-          <Label label="Browse All" />
-          <Spacer height={16} />
-
-          <View style={styles.containerBrowse}>
-            <TouchableOpacity style={styles.column}>
-              <Text style={styles.columnText}>Music</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.column}>
-              <Text style={styles.columnText}>Live Events</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.column}>
-              <Text style={styles.columnText}>Podcast</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.column}>
-              <Text style={styles.columnText}>Made for you</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.column}>
-              <Text style={styles.columnText}>Ramadhan</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.column}>
-              <Text style={styles.columnText}>Music Indonesia</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
     </ScrollView>

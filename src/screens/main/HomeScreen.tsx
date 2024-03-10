@@ -7,7 +7,7 @@ import YourShows from '../../components/organizes/HomeScreen/YourShows';
 import EpisodesForYou from '../../components/organizes/HomeScreen/EpisodesForYou';
 import ListAlbum from '../../components/organizes/HomeScreen/ListAlbum';
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
   return (
     <ScrollView style={style.container} showsVerticalScrollIndicator={false}>
       <ListAlbum />
@@ -18,9 +18,9 @@ export default function HomeScreen() {
         label="Sarah Suhairi, Aflie Zumi - SAH"
       />
       <Spacer height={20} />
-      <YourShows />
+      <YourShows navigation={navigation} />
       <Spacer height={26} />
-      <EpisodesForYou />
+      <EpisodesForYou navigation={navigation} />
       <Spacer height={42} />
     </ScrollView>
   );

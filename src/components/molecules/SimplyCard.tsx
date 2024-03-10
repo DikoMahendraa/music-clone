@@ -1,19 +1,28 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {memo} from 'react';
 import {scale} from '../../services/Scale';
 import Colors from '../../themes/Colors';
+import {Spacer} from '../atoms';
 
 type Props = {
-  label: string;
-  img: string;
+  label?: string;
+  img?: string;
+  name?: string;
+  onPress?: () => void;
 };
 
-const SimplyCard: React.FC<Props> = ({label, img}) => {
+const SimplyCard: React.FC<Props> = ({label, onPress, name, img}) => {
+  const cleanImg = img?.replace('{w}x{h}', '100x100');
+
   return (
-    <View style={styles.card}>
-      <Image style={styles.cardImg} source={{uri: img}} />
-      <Text style={styles.cardLabel}>{label}</Text>
-    </View>
+    <TouchableOpacity onPress={onPress} style={styles.card}>
+      <Image style={styles.cardImg} source={{uri: cleanImg}} />
+      <Spacer width={4} />
+      <View>
+        <Text style={styles.cardLabel}>{label}</Text>
+        {name && <Text style={styles.cardName}>{name}</Text>}
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -24,7 +33,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 4,
     flex: 1,
-    backgroundColor: 'gray',
     borderRadius: 6,
     alignItems: 'center',
   },
@@ -33,11 +41,16 @@ const styles = StyleSheet.create({
     height: scale(50),
     borderTopLeftRadius: 6,
     borderBottomLeftRadius: 6,
-    backgroundColor: Colors.primary,
   },
   cardLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: Colors.white,
+    color: Colors.primary,
+  },
+  cardName: {
+    marginTop: 10,
+    fontSize: 12,
+    fontWeight: '400',
+    color: Colors.black,
   },
 });
