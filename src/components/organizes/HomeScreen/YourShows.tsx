@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import {FlatList, View} from 'react-native';
 import {Label, Spacer} from '../../atoms';
 import {CardVertical} from '../../molecules';
-import {getListMusic} from '../../../services/api/appleMusic';
+import {getListMusic} from '../../../services/api/music';
 import {useQuery} from '@tanstack/react-query';
 
 const YourShows = ({navigation}: any) => {
@@ -27,7 +27,9 @@ const YourShows = ({navigation}: any) => {
         renderItem={({item}) => (
           <>
             <CardVertical
-              onPress={() => navigation.navigate('PlaySongScreen')}
+              onPress={() =>
+                navigation.navigate('PlaySongScreen', {id: item?.id})
+              }
               description={item?.attributes?.artistName}
               category={item?.type}
               label={item?.attributes?.name}

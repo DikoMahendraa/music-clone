@@ -80,3 +80,16 @@ export const getListMusic = ({limit = 10, offset}: ListMusicParams) =>
     offset,
     types: 'songs',
   });
+
+interface DetailMusicResponse {
+  data: Array<{
+    id: string;
+    type: string;
+    href: string;
+    attributes: SongAttributes;
+  }>;
+}
+
+export const getDetailMusic = ({id}: {id: string}) => {
+  return apisauceInstance.get<DetailMusicResponse>(`/catalog/id/songs/${id}`);
+};

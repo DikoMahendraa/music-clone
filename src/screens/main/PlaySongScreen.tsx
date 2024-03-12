@@ -1,9 +1,6 @@
-import TrackPlayer, {
-  Capability,
-  usePlaybackState,
-} from 'react-native-track-player';
+import TrackPlayer, {usePlaybackState} from 'react-native-track-player';
 import {StyleSheet, TouchableOpacity, Text, View, Image} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import Colors from '../../themes/Colors';
 import {
   ChevronLeftCircle,
@@ -14,77 +11,76 @@ import {
 } from 'lucide-react-native';
 import {scale} from '../../services/Scale';
 import Spacer from '../../components/atoms/Spacer';
+import {useQuery} from '@tanstack/react-query';
+import {getDetailMusic} from '../../services/api/music';
+import LoadingHelper from '../../services/LoadingHelper';
 
-const tracks = [
-  {
-    id: 1,
-    title: 'Joe 2',
-    url: 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/c9/ae/05/c9ae058d-b50a-f339-b789-3cbcdbb83374/mzaf_16377180790989771988.plus.aac.p.m4a',
-  },
-  {
-    id: 2,
-    title: 'Joe 1',
-    url: 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/c3/f8/b1/c3f8b1cc-f1da-2a85-4bf4-5a78eb1e8810/mzaf_6826234095381435358.plus.aac.p.m4a',
-  },
-  {
-    id: 3,
-    title: 'Joe 3',
-    url: 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/a6/59/24/a659245c-4307-df9c-4dbe-9eba26138314/mzaf_12893775833777961802.plus.aac.p.m4a',
-  },
-];
-
-TrackPlayer.updateOptions({
-  capabilities: [Capability.Play, Capability.Pause],
-  compactCapabilities: [Capability.Play, Capability.Pause],
-});
-
-// const setupTogglePlayer = async statusPlay => {
-//   const currentTrack = await TrackPlayer.getActiveTrackIndex();
-
-//   if (currentTrack !== null) {
-//     if (statusPlay === State.Paused) {
-//       await TrackPlayer.play();
-//     } else {
-//       await TrackPlayer.pause();
-//     }
-//   }
-// };
-
-const PlaySongScreen = ({navigation}: any) => {
+const PlaySongScreen = ({navigation, route}: any) => {
+  const songId = useMemo(() => route.params.id, [route.params?.id]);
   const {state: playBackState} = usePlaybackState();
 
+  const {data, isLoading} = useQuery({
+    queryKey: ['get-detail-music', songId],
+    queryFn: async () => await getDetailMusic({id: songId}),
+    enabled: !!songId,
+  });
+
+  const detailMusicData = data?.data?.data[0];
+
+  const songDetail = useMemo(() => {
+    if (!detailMusicData) {
+      return {};
+    }
+
+    return {
+      url: detailMusicData?.attributes.previews?.[0]?.url,
+      title: detailMusicData?.attributes.name,
+      cover: detailMusicData?.attributes.artwork.url.replace(
+        '{w}x{h}',
+        '400x400',
+      ),
+    };
+  }, [detailMusicData]);
+
   useEffect(() => {
-    const setupTrackPlayer = async () => {
-      try {
-        await TrackPlayer.setupPlayer();
-        await TrackPlayer.add(tracks);
-      } catch (error) {
-        console.log(error);
+    const setupMusicPlayer = async (): Promise<void> => {
+      if (songDetail.url) {
+        LoadingHelper.hide();
+        await TrackPlayer.add({url: songDetail.url});
       }
     };
 
-    setupTrackPlayer();
+    setupMusicPlayer();
 
-    return () => TrackPlayer.stop();
-  }, []);
+    return async () => {
+      await TrackPlayer.reset();
+    };
+  }, [songDetail, songId]);
+
+  if (isLoading) {
+    LoadingHelper.show();
+  }
 
   return (
     <View style={styles.container}>
       <Spacer height={24} />
       <TouchableOpacity
         style={styles.backButton}
-        onPress={() => navigation.goBack()}>
+        onPress={() => {
+          navigation.goBack();
+          TrackPlayer.reset();
+        }}>
         <MoveLeft color={Colors.primary} />
         <Text>Back</Text>
       </TouchableOpacity>
 
       <Spacer height={24} />
 
-      <View>
+      <View style={styles.containerImgCover}>
         <Image
-          style={{height: scale(400), width: '100%'}}
+          style={styles.imgCover}
           source={{
-            uri: 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/7c/04/ba/7c04ba17-2ff8-21b3-0ac0-7d141f86e924/20UMGIM64216.rgb.jpg/300x400bb.jpg',
+            uri: songDetail?.cover,
           }}
         />
       </View>
@@ -128,6 +124,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     position: 'relative',
   },
+  containerImgCover: {
+    position: 'relative',
+  },
+  imgCover: {height: scale(400), width: '100%'},
   backButton: {
     flexDirection: 'row',
     alignItems: 'center',

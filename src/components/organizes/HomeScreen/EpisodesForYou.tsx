@@ -3,7 +3,7 @@ import {FlatList, View} from 'react-native';
 import {Label, Spacer} from '../../atoms';
 import {CardVertical} from '../../molecules';
 import {useQuery} from '@tanstack/react-query';
-import {getListMusic} from '../../../services/api/appleMusic';
+import {getListMusic} from '../../../services/api/music';
 
 const EpisodesForYou = ({navigation}: any) => {
   const {data} = useQuery({

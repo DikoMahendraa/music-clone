@@ -15,7 +15,7 @@ import {Search} from 'lucide-react-native';
 import {Spacer, Label} from '../../components/atoms';
 import {SimplyCard} from '../../components/molecules';
 import Colors from '../../themes/Colors';
-import {ListMusicResponse, getListMusic} from '../../services/api/appleMusic';
+import {ListMusicResponse, getListMusic} from '../../services/api/music';
 
 export const getOffsetPageParams = ({
   url,
@@ -36,7 +36,7 @@ const EmptyList = () => (
   </View>
 );
 
-export default function ListMusicScreen() {
+export default function ListMusicScreen({navigation}: any) {
   const {refetch, isRefetching, data, hasNextPage, fetchNextPage, isLoading} =
     useInfiniteQuery<ApiResponse<ListMusicResponse, ListMusicResponse>>({
       queryKey: ['list-music'],
@@ -85,6 +85,9 @@ export default function ListMusicScreen() {
             renderItem={({item}): JSX.Element => (
               <>
                 <SimplyCard
+                  onPress={() =>
+                    navigation.navigate('PlaySongScreen', {id: item?.id})
+                  }
                   img={item?.attributes.artwork.url}
                   label={item?.attributes.name}
                   name={item?.attributes.artistName}
