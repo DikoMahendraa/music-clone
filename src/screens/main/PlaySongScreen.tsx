@@ -1,9 +1,11 @@
-import TrackPlayer, {usePlaybackState} from 'react-native-track-player';
-import {StyleSheet, TouchableOpacity, Text, View, Image} from 'react-native';
 import React, {useCallback, useEffect, useMemo} from 'react';
+import {StyleSheet, TouchableOpacity, Text, View, Image} from 'react-native';
+import TrackPlayer, {
+  usePlaybackState,
+  useProgress,
+} from 'react-native-track-player';
 import MarqueeText from 'react-native-marquee';
 import Colors from '../../themes/Colors';
-
 import {
   ChevronLeftCircle,
   ChevronRightCircle,
@@ -18,9 +20,43 @@ import {useQuery} from '@tanstack/react-query';
 import {getDetailMusic} from '../../services/api/music';
 import LoadingHelper from '../../services/LoadingHelper';
 
+function formatDuration(durationInSeconds: number) {
+  const minutes = Math.floor(durationInSeconds / 60);
+  const seconds = Math.floor(durationInSeconds % 60);
+  return `${minutes.toString().padStart(2, '0')}:${seconds
+    .toString()
+    .padStart(2, '0')}`;
+}
+
+const ProgressBar = ({
+  currentPosition,
+  duration,
+}: {
+  currentPosition: number;
+  duration: number;
+}) => {
+  const progress = (currentPosition / duration) * 100;
+
+  return (
+    <View>
+      <View style={styles.progressBarContainer}>
+        <View style={[styles.progressBar, {width: `${progress}%`}]} />
+      </View>
+      <Spacer height={4} />
+      <View style={styles.durationContainer}>
+        <Text style={styles.durationText}>
+          {formatDuration(currentPosition)}
+        </Text>
+        <Text style={styles.durationText}>{formatDuration(duration)}</Text>
+      </View>
+    </View>
+  );
+};
+
 const PlaySongScreen = ({navigation, route}: any) => {
-  const songId = useMemo(() => route.params?.id, [route.params?.id]);
   const {state: playBackState} = usePlaybackState();
+  const {position, duration} = useProgress();
+  const songId = useMemo(() => route.params?.id, [route.params?.id]);
 
   const {data, isLoading} = useQuery({
     queryKey: ['get-detail-music', songId],
@@ -46,7 +82,7 @@ const PlaySongScreen = ({navigation, route}: any) => {
     };
   }, [detailMusicData]);
 
-  // @ts-ignore
+  // @ts-expect-error
   useEffect(() => {
     const setupMusicPlayer = async (): Promise<void> => {
       if (songDetail.url) {
@@ -65,10 +101,17 @@ const PlaySongScreen = ({navigation, route}: any) => {
     TrackPlayer.reset();
   }, [navigation]);
 
+  const onPlay = useCallback(() => {
+    ['ended', 'paused'].includes(String(playBackState))
+      ? TrackPlayer.play()
+      : TrackPlayer.pause();
+  }, [playBackState]);
+
   if (isLoading) {
     LoadingHelper.show();
   }
 
+  console.log(playBackState);
   return (
     <View style={styles.container}>
       <Spacer height={24} />
@@ -80,12 +123,7 @@ const PlaySongScreen = ({navigation, route}: any) => {
       <Spacer height={24} />
 
       <View style={styles.containerImgCover}>
-        <Image
-          style={styles.imgCover}
-          source={{
-            uri: songDetail?.cover,
-          }}
-        />
+        <Image style={styles.imgCover} source={{uri: songDetail?.cover}} />
 
         <Spacer height={6} />
 
@@ -112,24 +150,21 @@ const PlaySongScreen = ({navigation, route}: any) => {
       <Spacer height={18} />
 
       <View style={styles.wrapperProgress}>
-        <View style={styles.progressBar} />
+        <ProgressBar currentPosition={position} duration={duration} />
       </View>
 
       <View style={styles.wrapperButton}>
         <TouchableOpacity>
           <ChevronLeftCircle size={30} color={Colors.primary} />
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buttonPlay}
-          onPress={() => {
-            return playBackState === 'playing'
-              ? TrackPlayer.pause()
-              : TrackPlayer.play();
-          }}>
-          {playBackState === 'playing' ? (
-            <Pause size={36} color={Colors.white} />
+        <TouchableOpacity style={styles.buttonPlay} onPress={onPlay}>
+          {['ended', 'paused'].includes(String(playBackState)) ? (
+            <>
+              <Spacer width={6} />
+              <Play size={36} color={Colors.white} />
+            </>
           ) : (
-            <Play style={{marginLeft: 8}} size={36} color={Colors.white} />
+            <Pause size={36} color={Colors.white} />
           )}
         </TouchableOpacity>
         <TouchableOpacity>
@@ -149,7 +184,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     position: 'relative',
   },
-  title: {fontSize: 20, fontWeight: '600', width: 280},
+  progressBarContainer: {
+    position: 'relative',
+    backgroundColor: Colors.black,
+    width: '100%',
+    height: 4,
+  },
+  progressBar: {
+    position: 'absolute',
+    height: 4,
+    backgroundColor: Colors.primary,
+  },
+  durationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  durationText: {
+    fontSize: 12,
+    color: Colors.black,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '600',
+    width: 280,
+  },
   artName: {
     fontWeight: '400',
     fontSize: 14,
@@ -164,22 +222,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  imgCover: {height: scale(350), width: '100%', borderRadius: 10},
+  imgCover: {
+    height: scale(350),
+    width: '100%',
+    borderRadius: 10,
+  },
   backButton: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
   },
-  text: {
-    color: Colors.white,
-  },
   wrapperProgress: {
     paddingHorizontal: scale(24),
-  },
-  progressBar: {
-    height: 4,
-    width: '100%',
-    backgroundColor: Colors.primary,
   },
   buttonPlay: {
     width: scale(80),
@@ -200,10 +254,5 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: scale(50),
-  },
-  heroMusic: {
-    height: scale(400),
-    borderRadius: 6,
-    backgroundColor: Colors.primary,
   },
 });
