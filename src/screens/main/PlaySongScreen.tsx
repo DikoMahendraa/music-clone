@@ -7,6 +7,7 @@ import TrackPlayer, {
 import MarqueeText from 'react-native-marquee';
 import Colors from '../../themes/Colors';
 import {
+  Bookmark,
   ChevronLeftCircle,
   ChevronRightCircle,
   CircleFadingPlus,
@@ -56,9 +57,12 @@ const ProgressBar = ({
 
 const PlaySongScreen = ({navigation, route}: any) => {
   const {state: playBackState} = usePlaybackState();
+  const {bookmarks} = useBookmarkStore();
   const {position, duration} = useProgress();
   const {addBookmark} = useBookmarkStore();
   const songId = useMemo(() => route.params?.id, [route.params?.id]);
+
+  const isBookmarkActive = bookmarks.some(item => item.id === songId);
 
   const {data, isLoading} = useQuery({
     queryKey: ['get-detail-music', songId],
@@ -158,7 +162,11 @@ const PlaySongScreen = ({navigation, route}: any) => {
           </View>
 
           <TouchableOpacity onPress={onAddToBookmark}>
-            <CircleFadingPlus color={Colors.primary} />
+            {isBookmarkActive ? (
+              <Bookmark color={Colors.primary} />
+            ) : (
+              <CircleFadingPlus color={Colors.primary} />
+            )}
           </TouchableOpacity>
         </View>
       </View>

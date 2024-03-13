@@ -45,12 +45,13 @@ const styles = StyleSheet.create({
   cardLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: Colors.primary,
+    color: Colors.white,
+    width: 300,
   },
   cardName: {
     marginTop: 10,
     fontSize: 12,
     fontWeight: '400',
-    color: Colors.black,
+    color: Colors.gray,
   },
 });

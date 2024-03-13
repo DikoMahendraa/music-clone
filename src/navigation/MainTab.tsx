@@ -6,7 +6,7 @@ import {
   ListMusicScreen,
 } from '../services/bundle_splitter/MainRegistration';
 import {MainTabParams} from '../models/NavigationModel';
-import {AudioLines, Search, Star} from 'lucide-react-native';
+import {AudioLines, LibraryBig, Search} from 'lucide-react-native';
 import Colors from '../themes/Colors';
 import {StyleSheet, Text} from 'react-native';
 const Tab = createBottomTabNavigator<MainTabParams>();
@@ -17,24 +17,24 @@ const MainTab = () => {
       switch (name) {
         case 'HomeScreen': {
           if (isFocused) {
-            return <AudioLines fill="white" color={Colors.primary} />;
+            return <AudioLines fill={Colors.white} color={Colors.white} />;
           } else {
-            return <AudioLines fill="white" color="gray" />;
+            return <AudioLines fill={Colors.white} color={Colors.gray} />;
           }
         }
         case 'ListMusicScreen': {
           if (isFocused) {
-            return <Search fill="white" color={Colors.primary} />;
+            return <Search color={Colors.white} />;
           } else {
-            return <Search fill="white" color="gray" />;
+            return <Search color={Colors.gray} />;
           }
         }
         case 'BookmarkScreen':
         default:
           if (isFocused) {
-            return <Star fill="white" color={Colors.primary} />;
+            return <LibraryBig color={Colors.white} />;
           } else {
-            return <Star fill="white" color="gray" />;
+            return <LibraryBig color={Colors.gray} />;
           }
       }
     },
@@ -46,25 +46,25 @@ const MainTab = () => {
       switch (name) {
         case 'HomeScreen': {
           if (isFocused) {
-            return <Text style={style.tabLabel}>Music</Text>;
+            return <Text style={style.tabLabelActive}>Music</Text>;
           } else {
-            return <Text style={style.tabLabel} />;
+            return <Text style={style.tabLabel}>Music</Text>;
           }
         }
         case 'ListMusicScreen': {
           if (isFocused) {
-            return <Text style={style.tabLabel}>Search</Text>;
+            return <Text style={style.tabLabelActive}>Search</Text>;
           } else {
-            return <Text style={style.tabLabel} />;
+            return <Text style={style.tabLabel}>Search</Text>;
           }
         }
 
         case 'BookmarkScreen':
         default:
           if (isFocused) {
-            return <Text style={style.tabLabel}>Bookmarks</Text>;
+            return <Text style={style.tabLabelActive}>Bookmarks</Text>;
           } else {
-            return <Text style={style.tabLabel} />;
+            return <Text style={style.tabLabel}>Bookmarks</Text>;
           }
       }
     },
@@ -76,7 +76,7 @@ const MainTab = () => {
       sceneContainerStyle={style.container}
       screenOptions={({route}) => ({
         freezeOnBlur: true,
-        tabBarStyle: {paddingTop: 8},
+        tabBarStyle: {paddingTop: 8, backgroundColor: Colors.gradientBlack},
         tabBarIcon: ({focused}) =>
           setTabIcon({isFocused: focused, name: route.name}),
         tabBarLabel: ({focused}) =>
@@ -115,10 +115,16 @@ export default MainTab;
 const style = StyleSheet.create({
   container: {
     paddingTop: 24,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.black,
+  },
+  tabLabelActive: {
+    marginTop: 4,
+    color: Colors.white,
+    fontSize: 12,
   },
   tabLabel: {
-    color: Colors.primary,
+    marginTop: 4,
+    color: Colors.gray,
     fontSize: 12,
   },
 });

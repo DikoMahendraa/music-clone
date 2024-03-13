@@ -1,6 +1,7 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {memo} from 'react';
 import Spacer from '../atoms/Spacer';
+import Colors from '../../themes/Colors';
 
 type Props = {
   img?: string;
@@ -53,12 +54,12 @@ const styles = StyleSheet.create({
     width: 50,
     borderRadius: 6,
   },
-  containCategory: {fontSize: 10, color: 'green'},
+  containCategory: {fontSize: 10, color: Colors.primary},
   containLabel: {
     fontSize: 12,
-    color: 'black',
-    maxWidth: '90%',
+    color: Colors.white,
+    maxWidth: '80%',
     fontWeight: '500',
   },
-  containDescription: {fontSize: 10, color: 'gray'},
+  containDescription: {fontSize: 10, color: Colors.gray},
 });

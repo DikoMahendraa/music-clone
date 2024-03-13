@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -72,6 +72,7 @@ export default function ListMusicScreen({navigation}: any) {
         <View style={styles.containerInput}>
           <Search size={20} color="gray" />
           <TextInput
+            placeholderTextColor={Colors.gray}
             placeholder="What do you want to listen to?"
             style={styles.textInput}
           />
@@ -99,7 +100,9 @@ export default function ListMusicScreen({navigation}: any) {
             keyExtractor={keyExtractor}
             onRefresh={refetch}
             refreshing={isRefetching}
-            ListEmptyComponent={isLoading ? ActivityIndicator : EmptyList}
+            ListEmptyComponent={
+              isLoading ? <ActivityIndicator color={Colors.white} /> : EmptyList
+            }
             refreshControl={
               <RefreshControl
                 refreshing={isRefetching}
@@ -108,7 +111,11 @@ export default function ListMusicScreen({navigation}: any) {
               />
             }
             onEndReached={onLoadMore}
-            ListFooterComponent={hasNextPage ? ActivityIndicator : undefined}
+            ListFooterComponent={
+              hasNextPage ? (
+                <ActivityIndicator color={Colors.white} />
+              ) : undefined
+            }
           />
         </View>
       </View>
@@ -132,6 +139,7 @@ const styles = StyleSheet.create({
   textInput: {
     width: '90%',
     paddingVertical: 8,
+    color: Colors.white,
     paddingHorizontal: 12,
   },
   column: {

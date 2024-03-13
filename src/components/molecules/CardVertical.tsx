@@ -1,6 +1,8 @@
 import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React, {memo} from 'react';
 import Spacer from '../atoms/Spacer';
+import {scale} from '../../services/Scale';
+import Colors from '../../themes/Colors';
 
 type Props = {
   img: string;
@@ -54,14 +56,18 @@ export default memo(CardVertical);
 
 const styles = StyleSheet.create({
   container: {
-    width: 150,
+    width: scale(150),
   },
   containImg: {
-    width: 150,
-    height: 150,
+    width: scale(150),
+    height: scale(150),
     borderRadius: 6,
   },
-  containCategory: {fontSize: 10, color: 'green', textTransform: 'capitalize'},
-  containLabel: {fontSize: 10, color: 'black', fontWeight: '500'},
-  containDescription: {fontSize: 10, color: 'gray'},
+  containCategory: {
+    fontSize: 10,
+    color: Colors.primary,
+    textTransform: 'capitalize',
+  },
+  containLabel: {fontSize: 10, color: Colors.white, fontWeight: '500'},
+  containDescription: {fontSize: 10, color: Colors.gray},
 });

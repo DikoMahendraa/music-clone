@@ -7,7 +7,7 @@ import SessionModel from '../models/SessionModel';
 import useSessionStore from '../stores/session/SessionStore';
 import {connect} from '../services/ZustandHelper';
 
-const RootNavigation = ({isLogin}) => {
+const RootNavigation = ({isLogin}: any) => {
   return (
     <NavigationContainer
       ref={r => {
@@ -18,8 +18,7 @@ const RootNavigation = ({isLogin}) => {
   );
 };
 
-// You can access props from here to put it into selectos.
-const Selectors = (props: any) => ({
+const Selectors = () => ({
   isLogin: useSessionStore((state: SessionModel) => state.isLogin),
 });
 
