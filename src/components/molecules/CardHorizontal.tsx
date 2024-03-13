@@ -1,13 +1,13 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {memo} from 'react';
 import Spacer from '../atoms/Spacer';
-import Colors from '../../themes/Colors';
 
 type Props = {
   img?: string;
   category?: string;
   label?: string;
   description?: string;
+  onPress?: () => void;
 };
 
 const CardHorizontal: React.FC<Props> = ({
@@ -15,12 +15,11 @@ const CardHorizontal: React.FC<Props> = ({
   category,
   description,
   label,
+  onPress,
 }) => {
-  const cleanImg = img?.replace('{w}x{h}', '200x200');
-
   return (
-    <TouchableOpacity style={styles.container}>
-      <Image style={styles.containImg} source={{uri: cleanImg}} />
+    <TouchableOpacity onPress={onPress} style={styles.container}>
+      <Image style={styles.containImg} source={{uri: img}} />
 
       <View>
         {category && (
@@ -53,9 +52,13 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     borderRadius: 6,
-    backgroundColor: Colors.primary,
   },
   containCategory: {fontSize: 10, color: 'green'},
-  containLabel: {fontSize: 12, color: 'black', fontWeight: '500'},
+  containLabel: {
+    fontSize: 12,
+    color: 'black',
+    maxWidth: '90%',
+    fontWeight: '500',
+  },
   containDescription: {fontSize: 10, color: 'gray'},
 });

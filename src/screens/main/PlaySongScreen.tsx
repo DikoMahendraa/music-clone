@@ -19,6 +19,7 @@ import Spacer from '../../components/atoms/Spacer';
 import {useQuery} from '@tanstack/react-query';
 import {getDetailMusic} from '../../services/api/music';
 import LoadingHelper from '../../services/LoadingHelper';
+import useBookmarkStore from '../../services/zustands';
 
 function formatDuration(durationInSeconds: number) {
   const minutes = Math.floor(durationInSeconds / 60);
@@ -56,6 +57,7 @@ const ProgressBar = ({
 const PlaySongScreen = ({navigation, route}: any) => {
   const {state: playBackState} = usePlaybackState();
   const {position, duration} = useProgress();
+  const {addBookmark} = useBookmarkStore();
   const songId = useMemo(() => route.params?.id, [route.params?.id]);
 
   const {data, isLoading} = useQuery({
@@ -94,7 +96,13 @@ const PlaySongScreen = ({navigation, route}: any) => {
     setupMusicPlayer();
 
     return () => TrackPlayer.reset();
-  }, [songDetail, songId]);
+  }, [songDetail.url]);
+
+  useEffect(() => {
+    if (playBackState === 'ended') {
+      TrackPlayer.reset();
+    }
+  }, [playBackState]);
 
   const onBack = useCallback(() => {
     navigation.goBack();
@@ -102,16 +110,24 @@ const PlaySongScreen = ({navigation, route}: any) => {
   }, [navigation]);
 
   const onPlay = useCallback(() => {
-    ['ended', 'paused'].includes(String(playBackState))
+    ['ended', 'paused', 'ready', 'none'].includes(String(playBackState))
       ? TrackPlayer.play()
       : TrackPlayer.pause();
   }, [playBackState]);
+
+  const onAddToBookmark = () => {
+    addBookmark({
+      id: songId,
+      title: songDetail?.title,
+      url: songDetail?.url,
+      img: songDetail?.cover,
+    });
+  };
 
   if (isLoading) {
     LoadingHelper.show();
   }
 
-  console.log(playBackState);
   return (
     <View style={styles.container}>
       <Spacer height={24} />
@@ -131,7 +147,7 @@ const PlaySongScreen = ({navigation, route}: any) => {
           <View>
             <MarqueeText
               style={styles.title}
-              speed={5}
+              speed={0.2}
               loop={true}
               consecutive={false}
               delay={2000}>
@@ -141,7 +157,7 @@ const PlaySongScreen = ({navigation, route}: any) => {
             <Text style={styles.artName}>{songDetail.artName}</Text>
           </View>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onAddToBookmark}>
             <CircleFadingPlus color={Colors.primary} />
           </TouchableOpacity>
         </View>
@@ -158,13 +174,13 @@ const PlaySongScreen = ({navigation, route}: any) => {
           <ChevronLeftCircle size={30} color={Colors.primary} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonPlay} onPress={onPlay}>
-          {['ended', 'paused'].includes(String(playBackState)) ? (
+          {['playing'].includes(String(playBackState)) ? (
+            <Pause size={36} color={Colors.white} />
+          ) : (
             <>
               <Spacer width={6} />
               <Play size={36} color={Colors.white} />
             </>
-          ) : (
-            <Pause size={36} color={Colors.white} />
           )}
         </TouchableOpacity>
         <TouchableOpacity>
