@@ -13,6 +13,7 @@ const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {
+    SplashScreen.hide();
     const initiateTrackPlayer = async () => {
       try {
         await TrackPlayer.setupPlayer();
@@ -26,7 +27,6 @@ const App = () => {
     };
 
     initiateTrackPlayer();
-    SplashScreen.hide();
   }, []);
 
   const setDropdownHolder = useCallback((ref: any) => {

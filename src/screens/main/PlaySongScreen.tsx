@@ -1,10 +1,13 @@
 import TrackPlayer, {usePlaybackState} from 'react-native-track-player';
 import {StyleSheet, TouchableOpacity, Text, View, Image} from 'react-native';
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
+import MarqueeText from 'react-native-marquee';
 import Colors from '../../themes/Colors';
+
 import {
   ChevronLeftCircle,
   ChevronRightCircle,
+  CircleFadingPlus,
   MoveLeft,
   Pause,
   Play,
@@ -16,7 +19,7 @@ import {getDetailMusic} from '../../services/api/music';
 import LoadingHelper from '../../services/LoadingHelper';
 
 const PlaySongScreen = ({navigation, route}: any) => {
-  const songId = useMemo(() => route.params.id, [route.params?.id]);
+  const songId = useMemo(() => route.params?.id, [route.params?.id]);
   const {state: playBackState} = usePlaybackState();
 
   const {data, isLoading} = useQuery({
@@ -35,6 +38,7 @@ const PlaySongScreen = ({navigation, route}: any) => {
     return {
       url: detailMusicData?.attributes.previews?.[0]?.url,
       title: detailMusicData?.attributes.name,
+      artName: detailMusicData?.attributes.artistName,
       cover: detailMusicData?.attributes.artwork.url.replace(
         '{w}x{h}',
         '400x400',
@@ -42,6 +46,7 @@ const PlaySongScreen = ({navigation, route}: any) => {
     };
   }, [detailMusicData]);
 
+  // @ts-ignore
   useEffect(() => {
     const setupMusicPlayer = async (): Promise<void> => {
       if (songDetail.url) {
@@ -52,10 +57,13 @@ const PlaySongScreen = ({navigation, route}: any) => {
 
     setupMusicPlayer();
 
-    return async () => {
-      await TrackPlayer.reset();
-    };
+    return () => TrackPlayer.reset();
   }, [songDetail, songId]);
+
+  const onBack = useCallback(() => {
+    navigation.goBack();
+    TrackPlayer.reset();
+  }, [navigation]);
 
   if (isLoading) {
     LoadingHelper.show();
@@ -64,12 +72,7 @@ const PlaySongScreen = ({navigation, route}: any) => {
   return (
     <View style={styles.container}>
       <Spacer height={24} />
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => {
-          navigation.goBack();
-          TrackPlayer.reset();
-        }}>
+      <TouchableOpacity style={styles.backButton} onPress={onBack}>
         <MoveLeft color={Colors.primary} />
         <Text>Back</Text>
       </TouchableOpacity>
@@ -83,9 +86,31 @@ const PlaySongScreen = ({navigation, route}: any) => {
             uri: songDetail?.cover,
           }}
         />
+
+        <Spacer height={6} />
+
+        <View style={styles.containerDescription}>
+          <View>
+            <MarqueeText
+              style={styles.title}
+              speed={5}
+              loop={true}
+              consecutive={false}
+              delay={2000}>
+              {songDetail.title}
+            </MarqueeText>
+            <Spacer height={6} />
+            <Text style={styles.artName}>{songDetail.artName}</Text>
+          </View>
+
+          <TouchableOpacity>
+            <CircleFadingPlus color={Colors.primary} />
+          </TouchableOpacity>
+        </View>
       </View>
 
-      <Spacer height={10} />
+      <Spacer height={18} />
+
       <View style={styles.wrapperProgress}>
         <View style={styles.progressBar} />
       </View>
@@ -124,10 +149,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     position: 'relative',
   },
+  title: {fontSize: 20, fontWeight: '600', width: 280},
+  artName: {
+    fontWeight: '400',
+    fontSize: 14,
+    width: 280,
+  },
   containerImgCover: {
     position: 'relative',
   },
-  imgCover: {height: scale(400), width: '100%'},
+  containerDescription: {
+    paddingHorizontal: 24,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  imgCover: {height: scale(350), width: '100%', borderRadius: 10},
   backButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -137,7 +174,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
   wrapperProgress: {
-    paddingHorizontal: 30,
+    paddingHorizontal: scale(24),
   },
   progressBar: {
     height: 4,
@@ -154,7 +191,7 @@ const styles = StyleSheet.create({
     borderRadius: scale(80 / 2),
   },
   wrapperButton: {
-    paddingHorizontal: 55,
+    paddingHorizontal: scale(55),
     gap: 6,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -162,7 +199,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: 80,
+    bottom: scale(50),
   },
   heroMusic: {
     height: scale(400),

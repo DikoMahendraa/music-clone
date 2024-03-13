@@ -5,12 +5,10 @@ import Spacer from '../../components/atoms/Spacer';
 import {Hero} from '../../components/molecules';
 import YourShows from '../../components/organizes/HomeScreen/YourShows';
 import EpisodesForYou from '../../components/organizes/HomeScreen/EpisodesForYou';
-import ListAlbum from '../../components/organizes/HomeScreen/ListAlbum';
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({navigation}: any) {
   return (
     <ScrollView style={style.container} showsVerticalScrollIndicator={false}>
-      <ListAlbum />
       <Spacer height={12} />
       <Hero
         backgroundImg=""

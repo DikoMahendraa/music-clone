@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {memo, useCallback} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -30,11 +30,11 @@ export const getOffsetPageParams = ({
   return undefined;
 };
 
-const EmptyList = () => (
+const EmptyList = memo(() => (
   <View>
     <Text>Empty list</Text>
   </View>
-);
+));
 
 export default function ListMusicScreen({navigation}: any) {
   const {refetch, isRefetching, data, hasNextPage, fetchNextPage, isLoading} =
@@ -52,11 +52,11 @@ export default function ListMusicScreen({navigation}: any) {
       },
     });
 
-  const onLoadMore = (): void => {
+  const onLoadMore = useCallback((): void => {
     if (hasNextPage) {
       fetchNextPage();
     }
-  };
+  }, [fetchNextPage, hasNextPage]);
 
   const keyExtractor = useCallback(
     (item: any | undefined, index: number) => `${index}-${item?.id}`,
