@@ -2,14 +2,14 @@ import React, {memo} from 'react';
 import {FlatList, View} from 'react-native';
 import {Label, Spacer} from '../../atoms';
 import {CardVertical} from '../../molecules';
-import {getListMusic} from '../../../services/api/music';
+import {getListMusicChart} from '../../../services/api/music';
 import {useQuery} from '@tanstack/react-query';
 
 const YourShows = ({navigation}: any) => {
   const {data} = useQuery({
     queryKey: ['list-music-your-shows'],
     queryFn: async () => {
-      return getListMusic({
+      return getListMusicChart({
         offset: Number(10),
         limit: 10,
       });

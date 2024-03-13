@@ -3,6 +3,7 @@ import React, {memo} from 'react';
 import Spacer from '../atoms/Spacer';
 import {scale} from '../../services/Scale';
 import Colors from '../../themes/Colors';
+import FastImage from 'react-native-fast-image';
 
 type Props = {
   img: string;
@@ -23,11 +24,13 @@ const CardVertical: React.FC<Props> = ({
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
-      <Image
+      <FastImage
         source={{
           uri: cleanImg,
+          priority: 'high',
         }}
         style={styles.containImg}
+        resizeMode={FastImage.resizeMode.contain}
       />
 
       {category && (

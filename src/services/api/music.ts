@@ -3,6 +3,7 @@ import {apisauceInstance} from './services';
 type ListMusicParams = {
   limit?: number;
   offset: number;
+  types?: string;
 };
 interface Artwork {
   width: number;
@@ -58,7 +59,8 @@ interface Chart {
 }
 
 interface Results {
-  songs: Chart[];
+  songs?: Chart[];
+  albums?: Chart[];
 }
 
 interface OrderResult {
@@ -74,11 +76,15 @@ export type ListMusicResponse = {
   meta: Meta;
 };
 
-export const getListMusic = ({limit = 10, offset}: ListMusicParams) =>
+export const getListMusicChart = ({
+  limit = 10,
+  offset,
+  types = 'songs',
+}: ListMusicParams) =>
   apisauceInstance.get<ListMusicResponse>('/catalog/id/charts', {
     limit,
     offset,
-    types: 'songs',
+    types,
   });
 
 interface DetailMusicResponse {

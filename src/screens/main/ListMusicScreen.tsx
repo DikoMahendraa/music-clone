@@ -1,8 +1,7 @@
-import React, {memo, useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   View,
   ActivityIndicator,
@@ -13,9 +12,9 @@ import {FlashList} from '@shopify/flash-list';
 import {ApiResponse} from 'apisauce';
 import {Search} from 'lucide-react-native';
 import {Spacer, Label} from '../../components/atoms';
-import {SimplyCard} from '../../components/molecules';
+import {EmptyState, SimplyCard} from '../../components/molecules';
 import Colors from '../../themes/Colors';
-import {ListMusicResponse, getListMusic} from '../../services/api/music';
+import {ListMusicResponse, getListMusicChart} from '../../services/api/music';
 
 export const getOffsetPageParams = ({
   url,
@@ -30,22 +29,16 @@ export const getOffsetPageParams = ({
   return undefined;
 };
 
-const EmptyList = memo(() => (
-  <View>
-    <Text>Empty list</Text>
-  </View>
-));
-
 export default function ListMusicScreen({navigation}: any) {
   const {refetch, isRefetching, data, hasNextPage, fetchNextPage, isLoading} =
     useInfiniteQuery<ApiResponse<ListMusicResponse, ListMusicResponse>>({
       queryKey: ['list-music'],
       initialPageParam: 5,
       getNextPageParam: ({data: dataNext}) =>
-        getOffsetPageParams({url: String(dataNext?.results.songs[0].next)}),
+        getOffsetPageParams({url: String(dataNext?.results.songs?.[0].next)}),
 
       queryFn: async ({pageParam}) => {
-        return getListMusic({
+        return getListMusicChart({
           offset: Number(pageParam),
           limit: 10,
         });
@@ -81,7 +74,7 @@ export default function ListMusicScreen({navigation}: any) {
         <View>
           <FlashList
             data={data?.pages
-              .map(item => item.data?.results.songs[0].data)
+              .map(item => item.data?.results.songs?.[0].data)
               .flat()}
             renderItem={({item}): JSX.Element => (
               <>
@@ -101,7 +94,11 @@ export default function ListMusicScreen({navigation}: any) {
             onRefresh={refetch}
             refreshing={isRefetching}
             ListEmptyComponent={
-              isLoading ? <ActivityIndicator color={Colors.white} /> : EmptyList
+              isLoading ? (
+                <ActivityIndicator color={Colors.white} />
+              ) : (
+                <EmptyState />
+              )
             }
             refreshControl={
               <RefreshControl

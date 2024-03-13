@@ -1,24 +1,34 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {PlayCircle} from 'lucide-react-native';
 import React from 'react';
 import Colors from '../../themes/Colors';
 import {scale} from '../../services/Scale';
-import {PlayCircle} from 'lucide-react-native';
+import FastImage from 'react-native-fast-image';
 
 type Props = {
-  label: string;
-  description: string;
-  backgroundImg: string;
+  label?: string;
+  category?: string[];
+  backgroundImg?: string;
 };
 
-const Hero: React.FC<Props> = ({label, description, backgroundImg}) => {
+const Hero: React.FC<Props> = ({label, category, backgroundImg}) => {
   return (
     <View style={styles.hero}>
-      <Image style={styles.heroBackground} source={{uri: backgroundImg}} />
+      <FastImage
+        style={styles.heroBackground}
+        source={{uri: backgroundImg, priority: 'high'}}
+      />
 
       <View style={styles.heroWrapperContain}>
         <View style={styles.wrapperDescription}>
           <Text style={styles.heroWrapperContainLabel}>{label}</Text>
-          <Text style={styles.heroWrapperContainSubLabel}>{description}</Text>
+          <View style={styles.wrapperCategory}>
+            {category?.slice(0, 3)?.map(item => (
+              <Text key={item} style={styles.heroWrapperContainSubLabel}>
+                {item}
+              </Text>
+            ))}
+          </View>
         </View>
         <TouchableOpacity>
           <PlayCircle color={Colors.white} size={35} />
@@ -37,8 +47,8 @@ const styles = StyleSheet.create({
   wrapperDescription: {
     width: '80%',
   },
+  wrapperCategory: {flexDirection: 'row', gap: 4},
   heroBackground: {
-    backgroundColor: Colors.primary,
     width: '100%',
     height: scale(160),
     borderRadius: 6,
@@ -60,8 +70,12 @@ const styles = StyleSheet.create({
   },
   heroWrapperContainSubLabel: {
     fontSize: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    backgroundColor: Colors.primary,
     marginTop: 6,
-    fontWeight: '400',
+    fontWeight: '500',
     color: Colors.white,
   },
 });

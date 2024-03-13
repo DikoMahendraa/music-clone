@@ -9,8 +9,9 @@ interface Bookmark {
 
 interface BookmarkStore {
   bookmarks: Bookmark[];
-  isOnBookmark: boolean;
+
   addBookmark: (bookmark: Bookmark) => void;
+  removeBookmark: (id: number) => void;
 }
 
 const useBookmarkStore = create<BookmarkStore>(set => ({
@@ -21,11 +22,15 @@ const useBookmarkStore = create<BookmarkStore>(set => ({
       if (!state.bookmarks.some(b => b.id === bookmark.id)) {
         return {
           bookmarks: [...state.bookmarks, bookmark],
-          isOnBookmark: true,
         };
       }
       return state;
     });
+  },
+  removeBookmark: id => {
+    set(state => ({
+      bookmarks: state.bookmarks.filter(bookmark => bookmark.id !== id),
+    }));
   },
 }));
 

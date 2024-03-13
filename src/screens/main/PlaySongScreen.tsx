@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, Text, View, Image} from 'react-native';
+import {StyleSheet, TouchableOpacity, Text, View} from 'react-native';
 import TrackPlayer, {
   usePlaybackState,
   useProgress,
@@ -21,6 +21,7 @@ import {useQuery} from '@tanstack/react-query';
 import {getDetailMusic} from '../../services/api/music';
 import LoadingHelper from '../../services/LoadingHelper';
 import useBookmarkStore from '../../services/zustands';
+import FastImage from 'react-native-fast-image';
 
 function formatDuration(durationInSeconds: number) {
   const minutes = Math.floor(durationInSeconds / 60);
@@ -59,7 +60,7 @@ const PlaySongScreen = ({navigation, route}: any) => {
   const {state: playBackState} = usePlaybackState();
   const {bookmarks} = useBookmarkStore();
   const {position, duration} = useProgress();
-  const {addBookmark} = useBookmarkStore();
+  const {addBookmark, removeBookmark} = useBookmarkStore();
   const songId = useMemo(() => route.params?.id, [route.params?.id]);
 
   const isBookmarkActive = bookmarks.some(item => item.id === songId);
@@ -119,14 +120,19 @@ const PlaySongScreen = ({navigation, route}: any) => {
       : TrackPlayer.pause();
   }, [playBackState]);
 
-  const onAddToBookmark = () => {
-    addBookmark({
-      id: songId,
-      title: songDetail?.title,
-      url: songDetail?.url,
-      img: songDetail?.cover,
-    });
-  };
+  const onAddToBookmark = useCallback(() => {
+    if (isBookmarkActive) {
+      removeBookmark(songId);
+    } else {
+      addBookmark({
+        id: songId,
+        title: songDetail?.title,
+        url: songDetail?.url,
+        img: songDetail?.cover,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isBookmarkActive]);
 
   if (isLoading) {
     LoadingHelper.show();
@@ -137,13 +143,16 @@ const PlaySongScreen = ({navigation, route}: any) => {
       <Spacer height={24} />
       <TouchableOpacity style={styles.backButton} onPress={onBack}>
         <MoveLeft color={Colors.primary} />
-        <Text>Back</Text>
       </TouchableOpacity>
 
       <Spacer height={24} />
 
       <View style={styles.containerImgCover}>
-        <Image style={styles.imgCover} source={{uri: songDetail?.cover}} />
+        <FastImage
+          resizeMode={FastImage.resizeMode.contain}
+          style={styles.imgCover}
+          source={{uri: songDetail?.cover, priority: 'high'}}
+        />
 
         <Spacer height={6} />
 
@@ -163,7 +172,7 @@ const PlaySongScreen = ({navigation, route}: any) => {
 
           <TouchableOpacity onPress={onAddToBookmark}>
             {isBookmarkActive ? (
-              <Bookmark color={Colors.primary} />
+              <Bookmark fill={Colors.primary} color={Colors.primary} />
             ) : (
               <CircleFadingPlus color={Colors.primary} />
             )}
@@ -206,11 +215,12 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: scale(38),
     paddingHorizontal: 6,
+    backgroundColor: Colors.white,
     position: 'relative',
   },
   progressBarContainer: {
     position: 'relative',
-    backgroundColor: Colors.black,
+    backgroundColor: Colors.gray,
     width: '100%',
     height: 4,
   },
@@ -225,7 +235,7 @@ const styles = StyleSheet.create({
   },
   durationText: {
     fontSize: 12,
-    color: Colors.black,
+    color: Colors.gray,
   },
   title: {
     fontSize: 20,

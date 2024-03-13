@@ -1,24 +1,19 @@
 import React from 'react';
 import {StyleSheet, ScrollView} from 'react-native';
 import Spacer from '../../components/atoms/Spacer';
-
-import {Hero} from '../../components/molecules';
-import YourShows from '../../components/organizes/HomeScreen/YourShows';
-import EpisodesForYou from '../../components/organizes/HomeScreen/EpisodesForYou';
+import HeroSection from '../../components/organizes/HomeScreen/HeroSection';
+import YourShowsSection from '../../components/organizes/HomeScreen/YourShowsSection';
+import EpisodesSection from '../../components/organizes/HomeScreen/EpisodesSection';
 
 export default function HomeScreen({navigation}: any) {
   return (
     <ScrollView style={style.container} showsVerticalScrollIndicator={false}>
       <Spacer height={12} />
-      <Hero
-        backgroundImg=""
-        description="Dengarkan lagu terbaru Sarah Suhairi dan Alfie Zumi sekarang."
-        label="Sarah Suhairi, Aflie Zumi - SAH"
-      />
+      <HeroSection />
       <Spacer height={20} />
-      <YourShows navigation={navigation} />
+      <YourShowsSection navigation={navigation} />
       <Spacer height={26} />
-      <EpisodesForYou navigation={navigation} />
+      <EpisodesSection navigation={navigation} />
       <Spacer height={42} />
     </ScrollView>
   );

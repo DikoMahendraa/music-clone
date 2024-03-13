@@ -3,13 +3,13 @@ import {FlatList, View} from 'react-native';
 import {Label, Spacer} from '../../atoms';
 import {CardVertical} from '../../molecules';
 import {useQuery} from '@tanstack/react-query';
-import {getListMusic} from '../../../services/api/music';
+import {getListMusicChart} from '../../../services/api/music';
 
 const EpisodesForYou = ({navigation}: any) => {
   const {data} = useQuery({
     queryKey: ['list-music-episodes'],
     queryFn: async () => {
-      return getListMusic({
+      return getListMusicChart({
         offset: Number(10),
         limit: 10,
       });
