@@ -63,7 +63,6 @@ const ListMusic = () => {
   );
 
   const ListEmptyComponent = useMemo(() => {
-    console.log('masuk sini ListEmptyComponent');
     return isLoading ? (
       <ActivityIndicator color={Colors.white} />
     ) : (

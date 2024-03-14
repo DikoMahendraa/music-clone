@@ -6,7 +6,6 @@ import YourShowsSection from '../../components/organizes/HomeScreen/YourShowsSec
 import EpisodesSection from '../../components/organizes/HomeScreen/EpisodesSection';
 
 export default function HomeScreen({navigation}: any) {
-  console.log('render');
   return (
     <ScrollView style={style.container} showsVerticalScrollIndicator={false}>
       <Spacer height={12} />

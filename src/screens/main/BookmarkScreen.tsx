@@ -21,8 +21,6 @@ export default function BookmarkScreen({navigation}: any) {
     navigation.navigate('ListMusicScreen');
   }, [navigation, setBookmarkMode]);
 
-  console.log('render bookmark screen');
-
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View>
