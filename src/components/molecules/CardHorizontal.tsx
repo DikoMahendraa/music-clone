@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   containCategory: {fontSize: 10, color: Colors.primary},
   containLabel: {
     fontSize: 12,
-    color: Colors.white,
+    color: Colors.black,
     maxWidth: '80%',
     fontWeight: '500',
   },

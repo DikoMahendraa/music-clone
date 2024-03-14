@@ -17,14 +17,14 @@ const MainTab = () => {
       switch (name) {
         case 'HomeScreen': {
           if (isFocused) {
-            return <AudioLines fill={Colors.white} color={Colors.white} />;
+            return <AudioLines fill={Colors.white} color={Colors.primary} />;
           } else {
             return <AudioLines fill={Colors.white} color={Colors.gray} />;
           }
         }
         case 'ListMusicScreen': {
           if (isFocused) {
-            return <Search color={Colors.white} />;
+            return <Search color={Colors.primary} />;
           } else {
             return <Search color={Colors.gray} />;
           }
@@ -32,7 +32,7 @@ const MainTab = () => {
         case 'BookmarkScreen':
         default:
           if (isFocused) {
-            return <LibraryBig color={Colors.white} />;
+            return <LibraryBig color={Colors.primary} />;
           } else {
             return <LibraryBig color={Colors.gray} />;
           }
@@ -76,7 +76,7 @@ const MainTab = () => {
       sceneContainerStyle={style.container}
       screenOptions={({route}) => ({
         freezeOnBlur: true,
-        tabBarStyle: {paddingTop: 8, backgroundColor: Colors.gradientBlack},
+        tabBarStyle: {paddingTop: 8, backgroundColor: Colors.white},
         tabBarIcon: ({focused}) =>
           setTabIcon({isFocused: focused, name: route.name}),
         tabBarLabel: ({focused}) =>
@@ -115,11 +115,11 @@ export default MainTab;
 const style = StyleSheet.create({
   container: {
     paddingTop: 24,
-    backgroundColor: Colors.black,
+    backgroundColor: Colors.white,
   },
   tabLabelActive: {
     marginTop: 4,
-    color: Colors.white,
+    color: Colors.primary,
     fontSize: 12,
   },
   tabLabel: {

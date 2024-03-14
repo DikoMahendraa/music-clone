@@ -2,7 +2,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {MainStackParams} from '../models/NavigationModel';
 import MainTab from './MainTab';
-import PlaySongScreen from '../screens/main/PlaySongScreen';
+import {PlaySongScreen} from '../services/bundle_splitter/MainRegistration';
 
 const Stack = createNativeStackNavigator<MainStackParams>();
 

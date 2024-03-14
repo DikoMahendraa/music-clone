@@ -14,7 +14,7 @@ export default memo(Label);
 
 const styles = StyleSheet.create({
   label: {
-    color: Colors.white,
+    color: Colors.black,
     fontSize: 16,
     fontWeight: '600',
   },

@@ -14,3 +14,8 @@ export const BookmarkScreen = register({
   loader: () => require('../../screens/main/BookmarkScreen'),
   name: 'BookmarkScreen',
 });
+
+export const PlaySongScreen = register({
+  loader: () => require('../../screens/main/PlaySongScreen'),
+  name: 'PlaySongScreen',
+});

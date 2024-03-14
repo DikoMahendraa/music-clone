@@ -1,12 +1,27 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Label, Spacer} from '../../components/atoms';
-import {CardHorizontal} from '../../components/molecules';
+import {CardHorizontal, EmptyState} from '../../components/molecules';
 import useBookmarkStore from '../../services/zustands';
 import {FlashList} from '@shopify/flash-list';
 
 export default function BookmarkScreen({navigation}: any) {
-  const {bookmarks} = useBookmarkStore();
+  const bookmarks = useBookmarkStore(state => state.bookmarks);
+  const setBookmarkMode = useBookmarkStore(state => state.setBookmarkMode);
+
+  const onNavigation = useCallback(
+    (id: string | number) => {
+      navigation.navigate('PlaySongScreen', {id});
+    },
+    [navigation],
+  );
+
+  const onBookmarkMode = useCallback(() => {
+    setBookmarkMode(true);
+    navigation.navigate('ListMusicScreen');
+  }, [navigation, setBookmarkMode]);
+
+  console.log('render bookmark screen');
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -20,9 +35,7 @@ export default function BookmarkScreen({navigation}: any) {
             renderItem={({item}) => (
               <>
                 <CardHorizontal
-                  onPress={() =>
-                    navigation.navigate('PlaySongScreen', {id: item?.id})
-                  }
+                  onPress={() => onNavigation(item.id)}
                   img={item?.img}
                   key={item?.id}
                   label={item?.title}
@@ -31,6 +44,12 @@ export default function BookmarkScreen({navigation}: any) {
                 <Spacer height={10} />
               </>
             )}
+            ListEmptyComponent={
+              <EmptyState
+                onPress={onBookmarkMode}
+                label="There are no songs saved in your music playlist"
+              />
+            }
             estimatedItemSize={20}
           />
         </View>
@@ -44,5 +63,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     flex: 1,
   },
-  wrapperFlashList: {flexGrow: 1, flexDirection: 'row'},
+  wrapperFlashList: {
+    minWidth: 100,
+    minHeight: 100,
+  },
 });

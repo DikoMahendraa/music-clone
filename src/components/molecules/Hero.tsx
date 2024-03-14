@@ -31,7 +31,7 @@ const Hero: React.FC<Props> = ({label, category, backgroundImg}) => {
           </View>
         </View>
         <TouchableOpacity>
-          <PlayCircle color={Colors.white} size={35} />
+          <PlayCircle color={Colors.primary} size={35} />
         </TouchableOpacity>
       </View>
     </View>

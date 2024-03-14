@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   cardLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: Colors.white,
+    color: Colors.black,
     width: 300,
   },
   cardName: {

@@ -58,9 +58,12 @@ const ProgressBar = ({
 
 const PlaySongScreen = ({navigation, route}: any) => {
   const {state: playBackState} = usePlaybackState();
-  const {bookmarks} = useBookmarkStore();
+  const bookmarks = useBookmarkStore(state => state.bookmarks);
+  const addBookmark = useBookmarkStore(state => state.addBookmark);
+  const removeBookmark = useBookmarkStore(state => state.removeBookmark);
+
   const {position, duration} = useProgress();
-  const {addBookmark, removeBookmark} = useBookmarkStore();
+
   const songId = useMemo(() => route.params?.id, [route.params?.id]);
 
   const isBookmarkActive = bookmarks?.some(item => item?.id === songId);
@@ -99,6 +102,8 @@ const PlaySongScreen = ({navigation, route}: any) => {
     };
 
     setupMusicPlayer();
+
+    TrackPlayer.play();
 
     return () => TrackPlayer.reset();
   }, [songDetail.url]);

@@ -71,6 +71,6 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     textTransform: 'capitalize',
   },
-  containLabel: {fontSize: 10, color: Colors.white, fontWeight: '500'},
+  containLabel: {fontSize: 12, color: Colors.black, fontWeight: '500'},
   containDescription: {fontSize: 10, color: Colors.gray},
 });
