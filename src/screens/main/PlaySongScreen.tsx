@@ -63,12 +63,13 @@ const PlaySongScreen = ({navigation, route}: any) => {
   const {addBookmark, removeBookmark} = useBookmarkStore();
   const songId = useMemo(() => route.params?.id, [route.params?.id]);
 
-  const isBookmarkActive = bookmarks.some(item => item.id === songId);
+  const isBookmarkActive = bookmarks?.some(item => item?.id === songId);
 
-  const {data, isLoading} = useQuery({
+  const {data, isLoading, error} = useQuery({
     queryKey: ['get-detail-music', songId],
     queryFn: async () => await getDetailMusic({id: songId}),
     enabled: !!songId,
+    retry: true,
   });
 
   const detailMusicData = data?.data?.data[0];
@@ -89,7 +90,6 @@ const PlaySongScreen = ({navigation, route}: any) => {
     };
   }, [detailMusicData]);
 
-  // @ts-expect-error
   useEffect(() => {
     const setupMusicPlayer = async (): Promise<void> => {
       if (songDetail.url) {
@@ -131,11 +131,26 @@ const PlaySongScreen = ({navigation, route}: any) => {
         img: songDetail?.cover,
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isBookmarkActive]);
+  }, [
+    addBookmark,
+    isBookmarkActive,
+    removeBookmark,
+    songDetail?.cover,
+    songDetail?.title,
+    songDetail?.url,
+    songId,
+  ]);
+
+  if (error) {
+    return (
+      <View>
+        <Text>Ups: {error.message}</Text>
+      </View>
+    );
+  }
 
   if (isLoading) {
-    LoadingHelper.show();
+    return LoadingHelper.show();
   }
 
   return (

@@ -10,8 +10,9 @@ const EpisodesForYou = ({navigation}: any) => {
     queryKey: ['list-music-episodes'],
     queryFn: async () => {
       return getListMusicChart({
-        offset: Number(10),
-        limit: 10,
+        offset: Number(6),
+        limit: 6,
+        genre: '20',
       });
     },
   });
@@ -23,11 +24,15 @@ const EpisodesForYou = ({navigation}: any) => {
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={data?.data?.results.songs[0].data}
+        data={data?.data?.results.songs?.[0].data}
         renderItem={({item}) => (
           <>
             <CardVertical
-              onPress={() => navigation.navigate('PlaySongScreen')}
+              onPress={() =>
+                navigation.navigate('PlaySongScreen', {
+                  id: item.id,
+                })
+              }
               description={item?.attributes?.artistName}
               category={item?.type}
               label={item?.attributes?.name}

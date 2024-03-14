@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import {FlatList, View} from 'react-native';
 import {Label, Spacer} from '../../atoms';
-import {CardVertical} from '../../molecules';
+import {CardVertical, EmptyState} from '../../molecules';
 import {getListMusicChart} from '../../../services/api/music';
 import {useQuery} from '@tanstack/react-query';
 
@@ -10,8 +10,9 @@ const YourShows = ({navigation}: any) => {
     queryKey: ['list-music-your-shows'],
     queryFn: async () => {
       return getListMusicChart({
-        offset: Number(10),
-        limit: 10,
+        offset: Number(6),
+        limit: 6,
+        genre: '10',
       });
     },
   });
@@ -23,7 +24,7 @@ const YourShows = ({navigation}: any) => {
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={data?.data?.results.songs[0].data}
+        data={data?.data?.results.songs?.[0].data}
         renderItem={({item}) => (
           <>
             <CardVertical
@@ -38,6 +39,7 @@ const YourShows = ({navigation}: any) => {
             <Spacer width={6} />
           </>
         )}
+        ListEmptyComponent={<EmptyState />}
         keyExtractor={item => item.id}
       />
     </View>

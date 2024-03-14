@@ -15,7 +15,7 @@ const HeroSection = () => {
     },
   });
 
-  const dataAlbums = data?.data?.results.albums?.[0].data[0];
+  const dataAlbums = data?.data?.results?.albums?.[0].data[0];
 
   return (
     <Hero
